@@ -5,33 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\hasMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class Padlet extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'name',
         'user_id',
-        'is_public',
+        'is_public'
     ];
 
-    // Beziehung zwischen den Models verankern
-
-    // Ein Padlet gehört zu einem User
     public function user() : BelongsTo {
-        return $this->belongsTo(User::class)->withTimestamps();
+        return $this->BelongsTo(User::class);
     }
 
-    // Ein Padlet hat mehrere Entries
-    public function entries() : hasMany {
+    public function entries() : HasMany {
         return $this->hasMany(Entrie::class);
     }
 
-    // Ein Padlet hat mehrere UserRights an User vergeben
-    public function userright() : HasMany {
+    public function userrights() : HasMany {
         return $this->hasMany(Userright::class);
     }
+
 }
