@@ -6,6 +6,7 @@ use App\Http\Controllers\PadletController;
 use \App\Http\Controllers\EntrieController;
 use \App\Http\Controllers\CommentController;
 use \App\Http\Controllers\RatingController;
+use \App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('padlets', [PadletController::class,'index']);
 Route::get('padlets/{id}', [PadletController::class,'findById']);
-Route::get('padlets/{id}', [PadletController::class,'checkId']);
+Route::get('padlets/check/{id}', [PadletController::class,'checkId']);
 Route::get('/padlets/search/{searchTerm}', [PadletController::class, 'findBySearchTerm']);
 Route::post('padlets', [PadletController::class,'save']);
 Route::put('padlets/{id}', [PadletController::class,'update']);
@@ -41,5 +42,9 @@ Route::post('entries/{entrie_id}/comments', [CommentController::class, 'save']);
 Route::get('entries/{entrie_id}/comments', [CommentController::class,'findByEntryID']);
 
 Route::get('ratings', [RatingController::class,'index']);
-Route::post('entries/{entrie_id}/ratings', [RatingController::class, 'save']);
+Route::post('entries/{entrie_id}/saveRatings', [RatingController::class, 'save']);
+Route::get('entries/{entrie_id}/findRatings', [RatingController::class,'findByEntryID']);
+
 Route::get('entries/{entrie_id}/ratings', [RatingController::class,'findByEntryID']);
+Route::get('entries/{entrie_id}/comments', [CommentController::class,'findByEntryID']);
+Route::get('users/{id}', [UserController::class, 'findById']);
