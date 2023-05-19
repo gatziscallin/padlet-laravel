@@ -48,3 +48,4 @@ Route::get('entries/{entrie_id}/findRatings', [RatingController::class,'findByEn
 Route::get('entries/{entrie_id}/ratings', [RatingController::class,'findByEntryID']);
 Route::get('entries/{entrie_id}/comments', [CommentController::class,'findByEntryID']);
 Route::get('users/{id}', [UserController::class, 'findById']);
+
