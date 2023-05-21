@@ -39,7 +39,7 @@ Route::group(['middleware'=>['api','auth.jwt']], function () {
     Route::post('entries/{entrie_id}/comments', [CommentController::class, 'save']);
 
     // Ratings - geschützte Route
-    Route::post('entries/{entrie_id}/saveRatings', [RatingController::class, 'save']);
+    Route::post('entries/{entrie_id}/ratings', [RatingController::class, 'save']);
 
     // Logout
     Route::post('auth/logout', [AuthController::class, 'logout']);
