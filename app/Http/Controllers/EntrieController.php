@@ -8,6 +8,7 @@ use App\Models\Padlet;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Js;
 
 class EntrieController extends Controller
 {
@@ -19,6 +20,12 @@ class EntrieController extends Controller
     public function findByPadletID(string $id):JsonResponse{
         $entry = Entrie::where('padlet_id', $id)
             ->with(['comments','user', 'ratings'])->get();
+        return $entry != null ? response()->json($entry, 200) : response()->json(null, 200);
+    }
+
+    public function findById (string $id) : JsonResponse {
+        $entry = Entrie::where('id', $id)
+            -> with(['comments','user', 'ratings'])->first();
         return $entry != null ? response()->json($entry, 200) : response()->json(null, 200);
     }
 
