@@ -15,12 +15,21 @@ use Illuminate\Support\Facades\DB;
 class RatingController extends Controller
 {
 
+    /**
+     * zeigt alle Ratings zu einem bestimmten Entry an
+     */
     public function findByEntryID(string $entry_id):JsonResponse{
         $rating = Rating::where('entrie_id', $entry_id)
             ->with(['user', 'entrie'])->get();
         return $rating != null ? response()->json($rating, 200) : response()->json(null, 200);
     }
 
+    /**
+     * legt neues Rating in der Datenbank an
+     * @param Request $request
+     * @param string $entrieID
+     * @return JsonResponse
+     */
     public function save (Request $request, string $entrieID): JsonResponse
     {
         $request = $this->parseRequest($request);
@@ -47,7 +56,12 @@ class RatingController extends Controller
         }
     }
 
-
+    /**
+     * Gibt das Datum im richtigen Format aus
+     * @param Request $request
+     * @return Request
+     * @throws \Exception
+     */
     private function parseRequest(Request $request): Request
     {
         // get date and convert it - its in ISO 8601, e.g. "2018-01-01T23:00:00.000Z"

@@ -2,7 +2,7 @@
 <html>
 <head>
 
-    <title>Laravel</title>
+    <title>Laravel - nur für Testzwecke</title>
 
 </head>
 <body>

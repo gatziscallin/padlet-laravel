@@ -21,4 +21,4 @@ Route::get('/', [PadletController::class,'index']);
 Route::get('/padlets', [PadletController::class,'index']);
 
 // Route führt auf einzelne Padlet-Seiten
-Route::get('/padlets/{book}',[PadletController::class,'show']);
+Route::get('/padlets/{padlet}',[PadletController::class,'show']);

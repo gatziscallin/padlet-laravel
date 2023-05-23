@@ -12,23 +12,44 @@ use Illuminate\Support\Js;
 
 class EntrieController extends Controller
 {
+    /**
+     * Liefert alle Einträge
+     * @return JsonResponse
+     */
     public function index():JsonResponse{
         $entry = Entrie::with(['comments','user', 'ratings'])->get();
         return response()->json($entry, 200);
     }
 
+    /**
+     * Gibt alle Einträge eines Padlets zurück
+     * @param string $id
+     * @return JsonResponse
+     */
     public function findByPadletID(string $id):JsonResponse{
         $entry = Entrie::where('padlet_id', $id)
             ->with(['comments','user', 'ratings'])->get();
         return $entry != null ? response()->json($entry, 200) : response()->json(null, 200);
     }
 
+    /**
+     * Macht einzelne Einträge findbar anhand ihrer ID
+     * @param string $id
+     * @return JsonResponse
+     */
     public function findById (string $id) : JsonResponse {
         $entry = Entrie::where('id', $id)
             -> with(['comments','user', 'ratings'])->first();
         return $entry != null ? response()->json($entry, 200) : response()->json(null, 200);
     }
 
+    /**
+     * speichert einen neuen Eintrag in die Datenbank
+     * @param Request $request
+     * @param string $padletID
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function save(Request $request, string $padletID):JsonResponse{
         $request = $this->parseRequest($request);
         DB::beginTransaction();
@@ -57,6 +78,12 @@ class EntrieController extends Controller
 
     }
 
+    /**
+     * Gibt das Datum im richtigen Format aus
+     * @param Request $request
+     * @return Request
+     * @throws \Exception
+     */
     private function parseRequest(Request $request): Request
     {
         //convert date
@@ -65,7 +92,9 @@ class EntrieController extends Controller
         return $request;
     }
 
-    // Update Entry
+    /**
+     * Updated einen bestehenden Eintrag und speichert ihn in der Datenbank
+     */
     public function update(Request $request, string $id): JsonResponse
     {
         DB::beginTransaction();
@@ -98,7 +127,11 @@ class EntrieController extends Controller
         }
     }
 
-    //delete Entry
+    /**
+     * Löscht einen Eintrag aus der Datenbank
+     * @param string $id
+     * @return JsonResponse
+     */
     public function delete(string $id): JsonResponse
     {
         $entrie = Entrie::where('id', $id)->first();

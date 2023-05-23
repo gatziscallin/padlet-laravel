@@ -7,6 +7,11 @@ use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
+    /**
+     * User anhand der ID zurückgeben
+     * @param string $id
+     * @return JsonResponse
+     */
     public function findById(string $id): JsonResponse
     {
         $user = User::where('id', $id)

@@ -12,24 +12,41 @@ use Illuminate\Support\Facades\DB;
 
 class PadletController extends Controller
 {
-    // Funktionen mit Postman testen
-
+    /**
+     * Liefert alle Padlets
+     * @return JsonResponse
+     */
     public function index():JsonResponse{
         $padlet = Padlet::with(['user','entries', 'userrights'])->get();
         return response()->json($padlet, 200);
     }
 
+    /**
+     * Padlet anhand der ID erhalten
+     * @param string $id
+     * @return JsonResponse
+     */
     public function findById (string $id) : JsonResponse {
         $padlet = Padlet::where('id', $id)
             -> with(['user','entries', 'userrights'])->first();
         return $padlet != null ? response()->json($padlet, 200) : response()->json(null, 200);
     }
 
+    /**
+     * Um zu checken, ob eine bestimmte ID in der Datenbank verwendet ist - vorrangig für Testzwecke
+     * @param string $id
+     * @return JsonResponse
+     */
     public function checkId (string $id) : JsonResponse {
         $padlet = Padlet::where('id', $id)->first();
         return $padlet != null ? response()->json(true, 200) : response()->json(false, 200);
     }
 
+    /**
+     * Ermöglicht die Suche innerhalb der Padlets - nicht im Frontend umgesetzt
+     * @param string $searchTerm
+     * @return JsonResponse
+     */
     public function findBySearchTerm (string $searchTerm) : JsonResponse {
         $padlets = Padlet::with(['user','entries', 'userrights'])
             ->where('name', 'LIKE' , '%' . $searchTerm . '%')
@@ -40,6 +57,12 @@ class PadletController extends Controller
         return response()->json($padlets, 200);
     }
 
+    /**
+     * Legt ein neues Padlet an und speichert es in der Datenbank
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function save(Request $request) : JsonResponse {
         $request = $this->parseRequest($request);
         DB::beginTransaction();
@@ -58,6 +81,12 @@ class PadletController extends Controller
 
     }
 
+    /**
+     * Gibt das Datum im richtigen Format aus
+     * @param Request $request
+     * @return Request
+     * @throws \Exception
+     */
     private function parseRequest(Request $request) : Request {
         //convert date
         $date = new \DateTime($request->created_at);
@@ -65,6 +94,9 @@ class PadletController extends Controller
         return $request;
     }
 
+    /**
+     * Updated ein bestehendes Padlet und speichert es in der Datenbank
+     */
     public function update(Request $request, string $id): JsonResponse
     {
         DB::beginTransaction();
@@ -102,6 +134,11 @@ class PadletController extends Controller
         }
     }
 
+    /**
+     * Löscht ein Padlet aus der Datenbank
+     * @param string $id
+     * @return JsonResponse
+     */
     public function delete(string $id) : JsonResponse {
         $padlet = Padlet::where('id', $id)->first();
         if ($padlet != null) {
